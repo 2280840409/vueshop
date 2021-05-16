@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import { request } from "../../network/index.js";
 export default {
   name: "Right",
   data() {
@@ -38,7 +37,7 @@ export default {
   },
   methods: {
     async getRightList() {
-      const res = await request({
+      const res = await this.request({
         method: "get",
         url: "rights/list",
       });

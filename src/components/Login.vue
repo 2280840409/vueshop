@@ -25,8 +25,6 @@
 </template>
 
 <script>
-import { request } from "../network/index.js";
-
 export default {
   name: "Login",
   data() {
@@ -66,7 +64,7 @@ export default {
     login() {
       this.$refs.loginRuleFormRef.validate(async (valid) => {
         if (!valid) return;
-        const res = await request({
+        const res = await this.request({
           method: "post",
           url: "login",
           params: this.loginForm,

@@ -91,7 +91,6 @@
 </template>
 
 <script>
-import { request } from "../../network/index.js";
 export default {
   data() {
     return {
@@ -140,7 +139,7 @@ export default {
   methods: {
     // 获取角色列表
     async getRolesList() {
-      const res = await request({
+      const res = await this.request({
         method: "get",
         url: "roles",
       });
@@ -151,7 +150,7 @@ export default {
     async addRole() {
       this.$refs.addFormRef.validate(async (valid) => {
         if (!valid) return;
-        const res = await request({
+        const res = await this.request({
           method: "post",
           url: "roles",
           data: this.addForm,
@@ -168,7 +167,7 @@ export default {
     },
     // 查询角色信息
     async showEditDialog(id) {
-      const res = await request({
+      const res = await this.request({
         method: "get",
         url: "roles/" + id,
       });
@@ -184,7 +183,7 @@ export default {
     editRoleInfo() {
       this.$refs.editFormRef.validate(async (valid) => {
         if (!valid) return;
-        const res = await request({
+        const res = await this.request({
           method: "put",
           url: "roles/" + this.editForm.roleId,
           data: {
@@ -207,7 +206,7 @@ export default {
       }).catch((err) => err);
       if (confirmResult !== "confirm") return this.$message.info("已取消删除");
 
-      const res = await request({
+      const res = await this.request({
         method: "delete",
         url: "roles/" + id,
       });
@@ -225,7 +224,7 @@ export default {
 
       if (confirmResult !== "confirm") return this.$message.info("已取消删除");
 
-      const res = await request({
+      const res = await this.request({
         method: "delete",
         url: `roles/${role.id}/rights/${rightId}`,
       });
@@ -236,7 +235,7 @@ export default {
     // 获取角色权限
     async showSetRightDialog(role) {
       this.roleId = role.id;
-      const res = await request({
+      const res = await this.request({
         method: "get",
         url: "rights/tree",
       });
@@ -256,7 +255,7 @@ export default {
     async allotRight() {
       const keys = [...this.$refs.treeRef.getCheckedKeys(), ...this.$refs.treeRef.getHalfCheckedKeys()];
       const idStr = keys.join(",");
-      const res = await request({
+      const res = await this.request({
         method: "post",
         url: `roles/${this.roleId}/rights`,
         data: {
@@ -264,7 +263,6 @@ export default {
         },
       });
       if (res.meta.status !== 200) return this.$message.error("授权角色权限失败");
-      console.log(res);
       this.$message.success("授权角色权限成功");
       this.getRolesList();
       this.setRightDialogVisible = false;

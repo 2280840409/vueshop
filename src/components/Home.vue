@@ -40,8 +40,6 @@
 </template>
 
 <script>
-import { request } from "../network/index.js";
-
 export default {
   name: "Home",
   data() {
@@ -68,7 +66,7 @@ export default {
       this.$router.push("/login");
     },
     async getMenuList() {
-      const res = await request({
+      const res = await this.request({
         method: "get",
         url: "menus",
       });

@@ -115,8 +115,6 @@
 </template>
 
 <script>
-import { request } from "../../network/index.js";
-
 export default {
   data() {
     // 验证邮箱
@@ -195,7 +193,7 @@ export default {
   },
   methods: {
     async getUserList() {
-      const res = await request({
+      const res = await this.request({
         method: "get",
         url: "/users",
         params: this.queryInfo,
@@ -215,7 +213,7 @@ export default {
       this.getUserList();
     },
     async userStateChanged(userinfo) {
-      await request({
+      await this.request({
         method: "put",
         url: `users/${userinfo.id}/state/${userinfo.mg_state}`,
       }).then((res) => {
@@ -240,7 +238,7 @@ export default {
     addUser() {
       this.$refs.addFormRef.validate(async (valid) => {
         if (!valid) return;
-        const res = await request({
+        const res = await this.request({
           method: "post",
           url: "users",
           data: this.addForm,
@@ -253,7 +251,7 @@ export default {
     },
     // 查询用户信息
     async showEditDialog(id) {
-      const res = await request({
+      const res = await this.request({
         method: "get",
         url: "users/" + id,
       });
@@ -268,7 +266,8 @@ export default {
     // 修改用户信息
     editUserInfo() {
       this.$refs.editFormRef.validate(async (valid) => {
-        const res = await request({
+        if (!valid) return;
+        const res = await this.request({
           method: "put",
           url: "users/" + this.editForm.id,
           data: {
@@ -294,11 +293,12 @@ export default {
       // console.log(confirmResult);
       if (confirmResult !== "confirm") return this.$message.info("已取消删除");
 
-      const res = await request({
+      const res = await this.request({
         method: "delete",
         url: "users/" + id,
       });
       if (res.meta.status !== 200) return this.$message.error("删除用户失败");
+      this.queryInfo.pagenum = 1;
       this.getUserList();
       this.$message.success("删除用户成功");
     },
@@ -306,7 +306,7 @@ export default {
     async showSetRoleDialog(userInfo) {
       this.userInfo = userInfo;
       this.setRoleDialogVisible = true;
-      const res = await request({
+      const res = await this.request({
         method: "get",
         url: "roles",
       });
@@ -315,7 +315,7 @@ export default {
     },
     // 分配角色
     async allotRole() {
-      const res = await request({
+      const res = await this.request({
         method: "put",
         url: `users/${this.userInfo.id}/role`,
         data: {
