@@ -39,7 +39,7 @@
       </el-pagination>
     </el-card>
     <!-- 添加分类对话框 -->
-    <el-dialog title="提示" :visible.sync="addCateDialogVisible" width="50%" @close="addCateDialogClosed">
+    <el-dialog title="添加分类" :visible.sync="addCateDialogVisible" width="50%" @close="addCateDialogClosed">
       <el-form :model="addCateForm" :rules="addCateRules" ref="addCateRuleFormRef" label-width="100px">
         <el-form-item label="分类名称" prop="cat_name">
           <el-input v-model="addCateForm.cat_name"></el-input>
@@ -62,7 +62,7 @@
       </span>
     </el-dialog>
     <!-- 编辑对话框 -->
-    <el-dialog title="提示" :visible.sync="editDialogVisible" width="50%">
+    <el-dialog title="修改名称" :visible.sync="editDialogVisible" width="50%">
       <el-form :model="editCateForm" :rules="editRules" ref="editRuleFormRef" label-width="120px">
         <el-form-item label="修改父类名称" prop="cat_name">
           <el-input v-model="editCateForm.cat_name"></el-input>
@@ -235,7 +235,7 @@ export default {
     },
     // 删除分类
     async removeCatebyId(id) {
-      const confirmResult = await this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
+      const confirmResult = await this.$confirm("此操作将永久删除该分类, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
